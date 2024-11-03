@@ -13,7 +13,10 @@ try {
     grade: { type: String, maxlength: 10, required: true },
   });
 
-  gradesSchema.plugin(AutoIncrement, { inc_field: "id" });
+  gradesSchema.plugin(AutoIncrement, { 
+    inc_field: "id",
+    id: "grades_counter"  // Unique identifier for grades counter
+  });
   GRADES = mongoose.model("grades", gradesSchema);
 }
 
@@ -50,8 +53,17 @@ try {
     day: { type: Number, required: true, maxlength: 11 },
   });
 
-  attendanceSchema.plugin(AutoIncrement, { inc_field: "id" });
+  // Add a pre-save hook similar to the student schema
+  attendanceSchema.pre('save', async function(next) {
+    if (this.isNew) {
+      const maxId = await this.constructor.findOne({}, { id: 1 }).sort('-id');
+      this.id = (maxId && maxId.id ? maxId.id : 0) + 1;
+    }
+    next();
+  });
+
   ATTENDANCE = mongoose.model("attendance", attendanceSchema);
 }
+
 
 export { GRADES, STUDENT, ATTENDANCE };
