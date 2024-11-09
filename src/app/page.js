@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { ArrowRight, Leaf, CheckCircle, BarChart, Smartphone, PieChart, Users, Clock, Shield, User, VenetianMask } from "lucide-react"
@@ -8,10 +8,35 @@ import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import Image from 'next/image'
 import { Facebook, Twitter, Linkedin, Instagram } from "lucide-react"
+import Typer from 'typer-js'
 
 export default function Home() {
   const [mounted, setMounted] = useState(false)
   const [patterns, setPatterns] = useState([])
+  const typerRef = useRef(null)
+  const hasTyped = useRef(false);
+
+
+  const cardVariants = {
+    hover: {
+      y: -8,
+      transition: {
+        duration: 0.3,
+        ease: "easeOut"
+      }
+    }
+  }
+
+  const iconVariants = {
+    hover: {
+      scale: 1.2,
+      rotate: 360,
+      transition: {
+        duration: 0.6,
+        ease: "easeInOut"
+      }
+    }
+  }
 
   useEffect(() => {
     setMounted(true)
@@ -21,6 +46,15 @@ export default function Home() {
       rotate: `${Math.random() * 360}deg`,
       isLarge: Math.random() > 0.5
     })))
+   
+    if (typerRef.current && !hasTyped.current) {
+      Typer(typerRef.current, 80)
+        .line("Manage attendance at your fingertips")
+        .pause(1000)
+        .back(0);
+      hasTyped.current = true;
+    }
+
   }, [])
 
   const fadeIn = {
@@ -29,7 +63,8 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-400 to-emerald-600 overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-600 via-green-700 to-emerald-900
+ overflow-hidden">
       {/* Hero Section */}
       <main className="relative pt-10">
         {/* Geometric Patterns */}
@@ -58,7 +93,7 @@ export default function Home() {
         </div>
 
         {/* Content */}
-        <div className="container mx-auto px-4 py-20 md:py-32 relative z-10">
+        <div className="container mx-auto px-4 py-20 md:py-32 relative z-10"> 
           <motion.div
             className="max-w-4xl mx-auto text-center"
             initial="hidden"
@@ -68,10 +103,10 @@ export default function Home() {
           >
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
               <div className="flex justify-center items-center space-x-4 mb-4">
-                <Leaf className="h-16 w-16 text-emerald-200 animate-pulse" />
+                <Leaf className="h-16 w-16 text-green-200 animate-pulse" />
                 <span className="font-mono">AttendEase</span>
               </div>
-              <span className="block font-serif text-emerald-100">Manage Attendance at Your Fingertips</span>
+              <span ref={typerRef} className="block font-serif text-emerald-100"></span>
             </h1>
             <p className="text-lg md:text-xl text-emerald-100 mb-8 max-w-2xl mx-auto">
               Streamline your attendance management process with our intuitive platform.
@@ -144,69 +179,76 @@ export default function Home() {
 
         {/* Features Section */}
         <div className="container mx-auto px-4 py-24 relative z-10">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-white mb-4">Powerful Features</h2>
-            <p className="text-xl text-emerald-100">Discover what makes AttendEase the perfect solution for your attendance needs</p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: BarChart,
-                title: "Track Attendance",
-                description: "Record and monitor attendance with just a few clicks."
-              },
-              {
-                icon: Smartphone,
-                title: "Mobile Friendly",
-                description: "Access your attendance system from any device, anywhere."
-              },
-              {
-                icon: PieChart,
-                title: "Analytics",
-                description: "Get detailed insights and reports on attendance patterns."
-              },
-              {
-                icon: Users,
-                title: "Team Management",
-                description: "Easily manage multiple teams and departments."
-              },
-              {
-                icon: Clock,
-                title: "Time Tracking",
-                description: "Accurate time tracking for precise attendance records."
-              },
-              {
-                icon: Shield,
-                title: "Data Security",
-                description: "Your data is protected with enterprise-grade security."
-              }
-            ].map((feature, index) => (
-              <motion.div
-                key={index}
-                initial="hidden"
-                animate={mounted ? "visible" : "hidden"}
-                variants={fadeIn}
-                transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
-              >
-                <Card className="relative overflow-hidden group hover:shadow-2xl transition-all duration-300 h-full">
-                  <CardContent className="p-6 flex flex-col items-center text-center h-full">
-                    <motion.div
-                      className="text-emerald-500 mb-4"
-                      whileHover={{ scale: 1.2, rotate: 360 }}
-                      transition={{ type: "spring", stiffness: 300 }}
-                    >
-                      <feature.icon size={48} />
-                    </motion.div>
-                    <h3 className="text-xl font-semibold mb-3 text-emerald-800">{feature.title}</h3>
-                    <p className="mb-6 text-emerald-600">{feature.description}</p>
-                    <ArrowRight className="mt-auto h-6 w-6 text-emerald-500 transform group-hover:translate-x-1 transition-transform" />
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-white mb-4">Powerful Features</h2>
+          <p className="text-xl text-emerald-100">Discover what makes AttendEase the perfect solution for your attendance needs</p>
         </div>
-
+        <div className="grid md:grid-cols-3 gap-8">
+          {[
+            {
+              icon: BarChart,
+              title: "Track Attendance",
+              description: "Record and monitor attendance with just a few clicks."
+            },
+            {
+              icon: Smartphone,
+              title: "Mobile Friendly",
+              description: "Access your attendance system from any device, anywhere."
+            },
+            {
+              icon: PieChart,
+              title: "Analytics",
+              description: "Get detailed insights and reports on attendance patterns."
+            },
+            {
+              icon: Users,
+              title: "Team Management",
+              description: "Easily manage multiple teams and departments."
+            },
+            {
+              icon: Clock,
+              title: "Time Tracking",
+              description: "Accurate time tracking for precise attendance records."
+            },
+            {
+              icon: Shield,
+              title: "Data Security",
+              description: "Your data is protected with enterprise-grade security."
+            }
+          ].map((feature, index) => (
+            <motion.div
+              key={index}
+              initial="hidden"
+              animate={mounted ? "visible" : "hidden"}
+              whileHover="hover"
+              variants={cardVariants}
+              className="h-full"
+            >
+              <Card className="relative overflow-hidden group h-full transition-all duration-300 bg-white/95 backdrop-blur-sm hover:bg-white shadow-lg hover:shadow-2xl border border-emerald-100/20">
+                <CardContent className="p-6 flex flex-col items-center text-center h-full">
+                  <motion.div
+                    className="relative"
+                    variants={iconVariants}
+                  >
+                    <div className="absolute inset-0 bg-emerald-100 rounded-full blur-lg opacity-0 group-hover:opacity-70 transition-opacity duration-300" />
+                    <feature.icon size={48} className="text-emerald-600 relative z-10" />
+                  </motion.div>
+                  <h3 className="text-xl font-semibold mt-6 mb-3 text-emerald-800 group-hover:text-emerald-600 transition-colors duration-300">
+                    {feature.title}
+                  </h3>
+                  <p className="mb-6 text-emerald-600 group-hover:text-emerald-500 transition-colors duration-300">
+                    {feature.description}
+                  </p>
+                  <div className="mt-auto flex items-center justify-center space-x-2 text-emerald-500 group-hover:text-emerald-400 transition-colors duration-300">
+                    <span className="font-medium">Learn more</span>
+                    <ArrowRight className="h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-300" />
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+      </div>
         {/* How It Works Section */}
         <div className="container mx-auto px-4 py-24 relative z-10">
           <div className="text-center mb-12">
