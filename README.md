@@ -105,6 +105,6 @@ Stuck? Have questions? Don't worry! 😊 Open an issue in the GitHub repository,
 
 ---
 
-Developed with ❤️ by [Anas]
+Developed with ❤️ by Anas
 
 Remember: Attendance made easy is learning made better! 🌟
