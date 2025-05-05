@@ -1,4 +1,4 @@
-# 📚 AttendEase: Student Attendance Tracking Web App
+# 📚 AttendEase: Student Attendance Tracker
 
 ## 🌟 Overview
 
